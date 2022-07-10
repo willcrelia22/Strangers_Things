@@ -1,32 +1,91 @@
-import React, { useState } from "react";
-
-function App() {
-  const [username, setUsername] = useState("");
+import React, { useEffect, useState } from "react";
+import { Header, Login, Posts, Profile, Register, AddPosts } from "./index.js";
+import { Routes, Route } from "react-router-dom";
+const App = () => {
+  const [posts, setPosts] = useState([]);
+  const [myInfo, setMyInfo] = useState([]);
+  const [username, setuserName] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-        console.log("submitting", username, password);
-        setPassword("");
-        setUsername("");
-      }}
-    >
-      <label>
-        User Name
-        <input
-          name="username"
-          type="text"
-          value="{username}"
-          onChange={(event) => {
-            setPassword(event.target.value);
-          }}
-        />
-      </label>
-      <button type="submit">Submit</button>
-    </form>
+    <div>
+      <Header
+        isLoggedIn={isLoggedIn}
+        setIsLoggedIn={setIsLoggedIn}
+        setuserName={setuserName}
+        setPassword={setPassword}
+      />
+      <div>
+        {isLoggedIn ? (
+          <Routes>
+            <Route
+              path="/Profile"
+              element={<Profile myInfo={myInfo} setMyInfo={setMyInfo} />}
+            />
+
+            <Route
+              path="/Posts"
+              element={
+                <Posts
+                  posts={posts}
+                  setPosts={setPosts}
+                  myInfo={myInfo}
+                  setMyInfo={setMyInfo}
+                  isLoggedIn={isLoggedIn}
+                  username={username}
+                />
+              }
+            />
+            <Route
+              path="/AddPosts"
+              element={
+                <AddPosts
+                  username={username}
+                  setPosts={setPosts}
+                  posts={posts}
+                />
+              }
+            />
+          </Routes>
+        ) : (
+          <div>
+            <Routes>
+              <Route
+                path="/Login"
+                element={
+                  <Login
+                    username={username}
+                    setuserName={setuserName}
+                    password={password}
+                    setPassword={setPassword}
+                    setIsLoggedIn={setIsLoggedIn}
+                  />
+                }
+              />
+              <Route
+                path="/Posts"
+                element={<Posts posts={posts} setPosts={setPosts} />}
+              />
+
+              <Route
+                path="/Register"
+                element={
+                  <Register
+                    username={username}
+                    setuserName={setuserName}
+                    password={password}
+                    setPassword={setPassword}
+                    setIsLoggedIn={setIsLoggedIn}
+                  />
+                }
+              />
+            </Routes>
+          </div>
+        )}
+      </div>
+    </div>
   );
-}
+};
 
 export default App;
