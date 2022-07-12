@@ -1,4 +1,3 @@
-import './Register.css'
 import { registerPerson } from "../api";
 import React, {useState} from 'react'
 

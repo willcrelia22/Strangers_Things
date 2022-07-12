@@ -1,4 +1,3 @@
-import './NewMessage.css'
 import React, {useState} from 'react'
 import { createMessage } from '../api'
 

@@ -1,4 +1,3 @@
-import './Login.css'
 import { NavLink } from 'react-router-dom'
 import React from "react";
 import {loginUser} from '../api'

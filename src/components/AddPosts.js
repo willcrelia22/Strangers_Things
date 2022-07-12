@@ -1,7 +1,6 @@
-import './AddPosts.css'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
-import { createNewPost } from '../api'
+import { addNewPost } from '../api'
 
 
 
@@ -24,7 +23,7 @@ const AddPosts = ({username, setPosts, posts}) => {
             willDeliver: willDeliver,
             
         }
-        const freshPost = await createNewPost(token, newPost)
+        const freshPost = await addNewPost(token, newPost)
         setPosts([...posts, freshPost])
         navigate('/Posts')
         

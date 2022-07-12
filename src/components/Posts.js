@@ -1,4 +1,3 @@
-import "./Posts.css";
 import React, { useEffect } from "react";
 import { fetchAllPosts } from "../api";
 import { NavLink } from "react-router-dom";

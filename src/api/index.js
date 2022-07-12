@@ -66,3 +66,33 @@ export const getProfile = async (token) => {
   console.log(data, "this is the data");
   return data;
 };
+
+export const addNewPost = async (token, addPost) => {
+  const response = await fetch(`${APIURL}/posts`,
+    {
+      method: "POST",
+      headers: {
+        'Content-Type': 'apllication/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        post: addPost
+      })
+    })
+  const result = await response.json();
+  const newUserPost = result.data.post;
+  return newUserPost;
+}
+
+export const removePost = async (token, postID) => {
+  const response = await fetch(`${APIURL}/posts`,
+    {
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json',
+        'Auhtorization': `Bearer ${token}`
+      },
+    })
+  const result = await response.json()
+  return result;
+}

@@ -1,4 +1,3 @@
-import './DeletePosts.css'
 import react from 'react'
 import { removePost, fetchAllPosts } from '../api'
 
