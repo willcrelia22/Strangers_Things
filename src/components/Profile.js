@@ -2,36 +2,60 @@ import React, { useEffect } from "react";
 import { getProfile } from "../api";
 
 const Profile = ({ myInfo, setMyInfo }) => {
-  
   useEffect(() => {
     let token = localStorage.getItem("token");
-    if (token){
+    if (token) {
       async function getMyInfo() {
         const myNewInfo = await getProfile(token);
-        console.log(myNewInfo, "mynewinfo")
         setMyInfo(myNewInfo);
       }
       getMyInfo();
     }
-   
   }, []);
 
   return (
-    <div>
+    <div id="messagesBox">
       {myInfo && myInfo.username ? (
-        <h1>Welcome {myInfo.username}</h1>
+        <h1 className="introTitle">hello {myInfo.username}!</h1>
       ) : (
-        <h1>Welcome</h1>
+        <h1 className="introTitle">welcome</h1>
       )}
-      <h2>Messages to Me:</h2>
+      <h2 id="messagesTitle">messages</h2>
       {myInfo && myInfo.messages && myInfo.messages.length ? (
         myInfo.messages.map((message, index) => {
-          return <div key={`mymessagesmap: ${index}`}>{message}</div>
+          return (
+            <div key={`mymessagesmap: ${index}`}>
+              {message.fromUser.username !== myInfo.username ? (
+                <div id="myMessages">
+                  <h3>from: {message.fromUser.username}</h3>
+                  <h3>to: {message.post.title}</h3>
+                  <p>message: {message.content}</p>
+                </div>
+              ) : null}
+            </div>
+          );
         })
       ) : (
-        <div>you have no messages at this time</div>
+        <div id="noMessages">no messages</div>
       )}
-      
+      <h2 id="messagesTitle">messages sent</h2>
+      {myInfo && myInfo.messages && myInfo.messages.length ? (
+        myInfo.messages.map((message, index) => {
+          return (
+            <div key={`mymessagesmap: ${index}`}>
+              {message.fromUser.username === myInfo.username ? (
+                <div id="myMessages">
+                  <h3>from: you</h3>
+                  <h3>to: {message.post.title}</h3>
+                  <p>message: {message.content}</p>
+                </div>
+              ) : null}
+            </div>
+          );
+        })
+      ) : (
+        <div id="noMessages">no messages</div>
+      )}
     </div>
   );
 };

@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Header, Login, Posts, Profile, Register, AddPosts } from "./index.js";
 import { Routes, Route } from "react-router-dom";
+
 const App = () => {
   const [posts, setPosts] = useState([]);
   const [myInfo, setMyInfo] = useState([]);
   const [username, setuserName] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   return (
     <div>

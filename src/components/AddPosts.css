@@ -1,0 +1,36 @@
+#newPost {
+    display: flex;
+    background-color: lightgrey;
+    flex-direction: column;
+    padding: 10px;
+    margin-top: 5px;
+    color: black;
+}
+
+.postTitles {
+    text-transform: lowercase;
+    padding-left: 5px;
+    font-size: 15px;
+}
+
+#descriptionID {
+    height:100px;
+    font-size:medium;
+    text-transform: lowercase;
+}
+
+#checkbox {
+    height: 12.5px;
+    width: 12.5px;
+    padding: 2.5px;
+    margin-top: 5px;
+}
+ 
+
+.submitPost {
+    padding: 10px;
+    width: 125px;
+    align-self: center;
+    font-size: 15px;
+
+}

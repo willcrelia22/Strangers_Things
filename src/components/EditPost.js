@@ -1,32 +1,42 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router";
-import { createNewPost } from "../api";
-import "./AddPosts.css" 
+import React, { useState, useEffect } from "react";
+import { modifyPost } from "../api";
+import { fetchAllPosts } from "../api";
+import "./EditPost.css"
 
-const AddPosts = ({ username, setPosts, posts }) => {
+function EditPost({ post, _id, posts, setPosts }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("free");
   const [location, setLocation] = useState("On Request");
   const [willDeliver, setWillDeliver] = useState(false);
-  const navigate = useNavigate();
-  const handleSubmit = async (event) => {
+
+  const handleEdit = async (event) => {
     event.preventDefault();
     const token = localStorage.getItem("token");
-    const newPost = {
-      title: title,
-      description: description,
-      price: price,
-      location: location,
-      willDeliver: willDeliver,
-    };
-    const freshPost = await createNewPost(token, newPost);
-    setPosts([...posts, freshPost]);
-    navigate("/Posts");
+    const postID = post._id;
+    await modifyPost(
+      token,
+      _id,
+      title,
+      description,
+      price,
+      location,
+      willDeliver
+    );
+    const newEditedPosts = await fetchAllPosts();
+    setPosts(newEditedPosts);
+    setTitle("");
+    setDescription("");
+    setPrice("");
+    setLocation("");
+    setWillDeliver(false);
   };
+
+  useEffect(() => {}, [posts]);
+
   return (
-    <div id="newPostBox">
-      <form id="newPost" onSubmit={handleSubmit}>
+    <div id="editPostBox">
+      <form id="editPost" onSubmit={handleEdit}>
         <label className="postTitles">Title:</label>
         <input
           onChange={(event) => {
@@ -80,13 +90,14 @@ const AddPosts = ({ username, setPosts, posts }) => {
             name="delivery"
             value={willDeliver}
           />
-          will deliver
+          Will Deliver
         </div>
         <button className="submitPost" type="submit">
-          submit post
+          Edit Post
         </button>
       </form>
     </div>
   );
-};
-export default AddPosts;
+}
+
+export default EditPost;

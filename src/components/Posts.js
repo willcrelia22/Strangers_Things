@@ -1,12 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchAllPosts } from "../api";
 import { NavLink } from "react-router-dom";
 import NewMessage from "./NewMessage";
 import DeletePosts from "./DeletePosts"
+import Search from "./Search"
+import EditPost from "./EditPost";
+import "./Posts.css"
 
 
-const Posts = ({ posts, setPosts, isLoggedIn, myInfo, setMyInfo, username }) => {
-  
+
+const Posts = ({ posts, setPosts, isLoggedIn, myInfo, setMyInfo, username, post }) => {
+ const [filteredPosts, setFilteredPosts] = useState([]) 
+ 
+
+
+
  
   async function getAllPosts() {
     const fetchPosts = await fetchAllPosts();
@@ -16,47 +24,84 @@ const Posts = ({ posts, setPosts, isLoggedIn, myInfo, setMyInfo, username }) => 
     getAllPosts();
   }, []);
   console.log("Posts", posts);
-  const getPosts = posts.map((post, index)=> {
+  let getPosts = []
+
+  if (filteredPosts.length){
+    getPosts = filteredPosts.map((post)=> {
       return (
         
-          <div className='descriptionBox' key={`mypostsmap: ${index}`}>
-          <h1 className='title'>{post.title}</h1>
-          <p className='descriptions'>{post.description}</p>
-          <p className='descriptions'>{post.author.username}</p>
-          <p className='descriptions'>{post.price}</p>
-          <p className='descriptions'>{post.location}</p>
-          <p className='descriptions'>{post.willDeliver}</p>
-        { isLoggedIn ?
-          <>
-          { post.author.username !== username ?
-          <NewMessage myInfo={myInfo} setMyInfo={setMyInfo}/>
+          <div className='postsdescriptionBox' key={post._id}>
+          <h5 className='title'>{post.title}</h5>
+          <p className='descriptions'>description: {post.description}</p>
+          <p className='descriptions'>user: {post.author.username}</p>
+          <p className='descriptions'>price: {post.price}</p>
+          <p className='descriptions'>location: {post.location}</p>
+          { post.willDeliver ?
+          <p className='descriptions'>delivery: Yes</p>
+            :null
+          }
+          {post.author.username !== localStorage.getItem("username")?
+          <NewMessage myInfo={myInfo} setMyInfo={setMyInfo} _id={post._id} post={post}/>
           :null
           }
-          { post.author.username === username ?
+          { localStorage.getItem("token") && post.author.username === localStorage.getItem("username") ?
           <>
-          <DeletePosts setPosts={setPosts} posts={posts} post={post} />
-          <button>Edit will go here</button>
+          <DeletePosts post={post} _id={post._id} posts={posts} setPosts={setPosts}  />
+          <EditPost post={post} _id={post._id} posts={posts} setPosts={setPosts} username={post.author.username}/>
           </>
           : null
           }
-          </>
-          :null }
+         
           </div>  
       )
   })
+  } else {
+    getPosts = posts.map((post)=> {
+      return (
+        
+          <div className='postsdescriptionBox' key={post._id}>
+          <h5 className='title'>{post.title}</h5>
+          <p className='descriptions'>description: {post.description}</p>
+          <p className='descriptions'>user: {post.author.username}</p>
+          <p className='descriptions'>price: {post.price}</p>
+          <p className='descriptions'>location: {post.location}</p>
+          { post.willDeliver ?
+          <p className='descriptions'>delivery: Yes</p>
+            :null
+          }
+        {  post.author.username !== localStorage.getItem("username") ?
+          <NewMessage myInfo={myInfo} setMyInfo={setMyInfo} _id={post._id} post={post}/>
+          :null
+        }
+        
+        {localStorage.getItem("token") && post.author.username === localStorage.getItem("username") ?
+          <>
+          <DeletePosts post={post} _id={post._id} posts={posts} setPosts={setPosts}  />
+          <EditPost post={post} _id={post._id} posts={posts} setPosts={setPosts} username={post.author.username}/>
+          </>
+          : null
+          }
+          </div>  
+      )
+  })
+  }
+  
+
   
   return (
-    <>
-    { localStorage.getItem("token") ? 
-    <div>
-    <NavLink to='/AddPosts'>Add New Post</NavLink>
+    <div className="bigBox">
+    { localStorage.getItem("token") && isLoggedIn ? 
+    <div id="addNewLink">
+    <NavLink to='/AddPosts'>new post</NavLink>
+    
     </div> 
     : null
     }
-    <div>
-    {getPosts}
+    <div id="searchBox">
+    <Search posts={posts} setPosts={setPosts} post={post} setFilteredPosts={setFilteredPosts}/>
+    <div>{getPosts}</div>
     </div> 
-    </>
+    </div>
   )
 };
 export default Posts;

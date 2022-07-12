@@ -1,5 +1,6 @@
 import { registerPerson } from "../api";
 import React, {useState} from 'react'
+import "./Register.css"
 
 
 
@@ -10,29 +11,30 @@ function Register ({username, password, setuserName, setPassword, setIsLoggedIn}
         if (token) {
             setIsLoggedIn(true)  
             localStorage.setItem("token", token)
+            localStorage.setItem("username", username )
+            setuserName(username)
             }
     } 
     return (
         <div id = "registerBox">
        <form onSubmit={handleSubmit}>
-            <h1>Register for your Stranger's Things account</h1>
-            <label>Create username:</label>
+            <h1>sign up for an account</h1>
+            <label>create username</label>
             <input id="username" 
-            placeholder="Create username here"
+            placeholder="create username here"
             value = {username}
             onChange={(event)=>{
                 setuserName(event.target.value)
             }}>
             </input>
-            <label>Password</label>
+            <label>password</label>
             <input id="password" 
-            placeholder="Create password"
+            placeholder="create password here"
             value = {password}
                 onChange={(event)=>{
                     setPassword(event.target.value)
                 }}></input>
-            {/* <input id="password" placeholder="Retype password"></input> */}
-            <button type="submit">Create account</button>
+            <button type="submit">create account</button>
         </form>
         </div>
 

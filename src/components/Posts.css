@@ -1,0 +1,41 @@
+.postsdescriptionBox {
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 20px;
+    margin-bottom: 5px;
+    padding-top: 5px;
+    margin-top: 5px;
+    color: black;
+    text-decoration: underline;
+    text-transform: lowercase;
+    
+    
+}
+
+.descriptions {
+    text-transform: lowercase;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-size: 15px;
+}
+
+.bigBox {
+    display:flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    
+    
+}
+
+#searchBox {
+    align-self: center;
+    margin-bottom: 5px;
+}
+
+#addNewLink {
+     color: black;
+     font-size: 20px;
+}
